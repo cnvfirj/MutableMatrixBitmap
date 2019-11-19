@@ -1,0 +1,2 @@
+include ':app', ':mutmatrix'
+rootProject.name='MutableMatrixBitmap'
