@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,11 +23,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.Objects;
 
 import io.reactivex.Observable;
-
-import static com.example.mutmatrix.Massages.ERROR;
 
 public class DrawView extends View {
 
@@ -59,7 +57,7 @@ public class DrawView extends View {
 
     private void init(){
         bitmap = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.pic);
-        mat = new DeformMat();
+        mat = new DeformMat(getContext()).bitmap(new PointF(bitmap.getWidth(),bitmap.getHeight()));
         command(DeformMat.Command.TRANSLATE);
         requestData();
     }

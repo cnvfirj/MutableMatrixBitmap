@@ -7,4 +7,8 @@ public class Massages {
     public static void ERROR(String text){
         Log.e("Error DeformMat ", text);
     }
+
+    public static void MASSAGE(String text){
+        Log.d("MASSAGE",text);
+    }
 }
