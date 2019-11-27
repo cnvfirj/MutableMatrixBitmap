@@ -5,9 +5,25 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
+import com.example.mutmatrix.CompRep;
+
+import static com.example.mutmatrix.Massages.ERROR;
 import static com.example.mutmatrix.Massages.MASSAGE;
+import static com.example.mutmatrix.actions.Scale.Scaled.ADAPT;
+import static com.example.mutmatrix.actions.Scale.Scaled.COMMON;
+import static com.example.mutmatrix.actions.Scale.Scaled.MAX;
+import static com.example.mutmatrix.actions.Scale.Scaled.MIN;
 
 public class Scale extends Base{
+
+    public enum Scaled{
+        MAX,
+        MIN,
+        ADAPT,
+        COMMON
+    }
+
+    private PointF view;
 
     private ScaleGestureDetector detector;
 
@@ -29,6 +45,21 @@ public class Scale extends Base{
     }
 
     @Override
+    public Base view(PointF v) {
+        view = v;
+        return super.view(v);
+    }
+
+    @Override
+    public void scalar(Scaled s) {
+        super.scalar(s);
+        if(s.equals(MAX))rep.setScale(10.f);
+        else if(s.equals(MIN))rep.setScale(0.1f);
+        else if(s.equals(ADAPT))rep.setScale(adapt());
+        else if(s.equals(COMMON))rep.setScale(1.0f);
+    }
+
+    @Override
     public void start(PointF p) {
 
     }
@@ -43,6 +74,14 @@ public class Scale extends Base{
 
     }
 
+    private float adapt(){
+        if(view!=null){
+            float sV = view.x>=view.y ? view.x : view.y;
+            float sB = rep.getWidthBit()<=rep.getHeightBit() ? rep.getWidthBit() : rep.getHeightBit();
+            return   sV/sB;
+        }ERROR("add params view");
+        return 1.0f;
+    }
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
 
         private float scale = 1.0f;

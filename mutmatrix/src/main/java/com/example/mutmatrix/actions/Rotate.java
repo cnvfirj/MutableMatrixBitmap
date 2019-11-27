@@ -59,7 +59,6 @@ public class Rotate extends Base {
     @Override
     public void start(PointF p) {
        start = p;
-       rep.findLoc();
        float[]c = rep.getLoc()[R_CENTER];
        center = new PointF(c[P_X],c[P_Y]);
     }

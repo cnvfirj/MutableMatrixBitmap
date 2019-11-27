@@ -90,6 +90,11 @@ public class DeformMat {
         return this;
     }
 
+    public DeformMat view(PointF v){
+        scale.view(v);
+        return this;
+    }
+
     public void setRepository(CompRep rep) {
         this.repository = rep;
         translate.rep(rep);
@@ -100,5 +105,17 @@ public class DeformMat {
 
     public CompRep getRepository(){
         return repository;
+    }
+
+    public PointF getPointBitmap(PointF p){
+        return deform.getPointBitmap(p);
+    }
+
+    public PointF[] muteDeformLoc(Deform.Coordinates c){
+        return deform.muteDeformLoc(c);
+    }
+
+    public void scaled(Scale.Scaled s){
+        scale.scalar(s);
     }
 }

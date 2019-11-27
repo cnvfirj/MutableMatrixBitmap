@@ -27,6 +27,22 @@ public abstract class Base {
         return this;
     }
 
+    public Base view(PointF v){
+        return this;
+    }
+
+    public PointF getPointBitmap(PointF p){
+        return null;
+    }
+
+    public PointF[]muteDeformLoc(Deform.Coordinates c){
+        return null;
+    }
+
+    public void scalar(Scale.Scaled s){
+
+    }
+
     public abstract void reset();
 
     public abstract void start(PointF p);

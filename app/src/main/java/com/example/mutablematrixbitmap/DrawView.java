@@ -32,6 +32,7 @@ public class DrawView extends View {
 
     private DeformMat mat;
 
+
     public DrawView(Context context) {
         super(context);
         init();
@@ -47,6 +48,10 @@ public class DrawView extends View {
             bitmap.recycle();
         }
         saveState();
+    }
+
+    public void start(){
+        init();
     }
 
 
@@ -113,8 +118,6 @@ public class DrawView extends View {
     }
 
     private void requestData(){
-
-
             File data = new File(getContext().getFilesDir().getPath()+"/state.rep");
 
             try {

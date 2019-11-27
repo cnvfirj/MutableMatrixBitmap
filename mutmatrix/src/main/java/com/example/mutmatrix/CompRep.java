@@ -48,6 +48,8 @@ public class CompRep implements Serializable {
 
     private float[][]cLoc;
 
+    private float[]cBord;
+
     CompRep() {
         reset();
     }
@@ -104,6 +106,12 @@ public class CompRep implements Serializable {
     public void setBitmap(PointF bitmap) {
         this.cWidthImg = bitmap.x;
         this.cHeightImg = bitmap.y;
+        cBord = new float[]{cWidthImg/6,cHeightImg/6};
+        createSrcDst(bitmap);
+    }
+
+    public float[] getBorD(){
+        return cBord;
     }
 
     public void setScale(float cScale) {
@@ -123,14 +131,7 @@ public class CompRep implements Serializable {
     }
 
     public void setDst(float[] arr) {
-//        cDst_0 = arr[0];
-//        cDst_1 = arr[1];
-//        cDst_2 = arr[2];
-//        cDst_3 = arr[3];
-//        cDst_4 = arr[4];
-//        cDst_5 = arr[5];
-//        cDst_6 = arr[6];
-//        cDst_7 = arr[7];
+
         cDst[0] = arr[0];
         cDst[1] = arr[1];
         cDst[2] = arr[2];
@@ -141,15 +142,22 @@ public class CompRep implements Serializable {
         cDst[7] = arr[7];
 
     }
+
+    private void createSrcDst(PointF bitmap){
+        cSrc[0] = 0;
+        cSrc[1] = 0;
+        cSrc[2] = bitmap.x;
+        cSrc[3] = 0;
+        cSrc[4] = bitmap.x;
+        cSrc[5] = bitmap.y;
+        cSrc[6] = 0;
+        cSrc[7] = bitmap.y;
+        setDst(cSrc);
+        cInt = new float[8];
+    }
+
     public void setSrc(float[] arr) {
-//        cSrc_0 = arr[0];
-//        cSrc_1 = arr[1];
-//        cSrc_2 = arr[2];
-//        cSrc_3 = arr[3];
-//        cSrc_4 = arr[4];
-//        cSrc_5 = arr[5];
-//        cSrc_6 = arr[6];
-//        cSrc_7 = arr[7];
+
         cSrc[0] = arr[0];
         cSrc[1] = arr[1];
         cSrc[2] = arr[2];
@@ -160,14 +168,7 @@ public class CompRep implements Serializable {
         cSrc[7] = arr[7];
     }
     public void setInt(float[] arr) {
-//        cInt_0 = arr[0];
-//        cInt_1 = arr[1];
-//        cInt_2 = arr[2];
-//        cInt_3 = arr[3];
-//        cInt_4 = arr[4];
-//        cInt_5 = arr[5];
-//        cInt_6 = arr[6];
-//        cInt_7 = arr[7];
+
         cInt[0] = arr[0];
         cInt[1] = arr[1];
         cInt[2] = arr[2];
@@ -178,6 +179,11 @@ public class CompRep implements Serializable {
         cInt[7] = arr[7];
     }
 
+    public void finDeform(){
+        for (int i=0;i<cInt.length;i++){
+            cInt[i]=cDst[i]-cSrc[i];
+        }
+    }
 
     public RectF getDefaultLoc(){
         if(cHeightImg>0&&cWidthImg>0) {
@@ -196,7 +202,6 @@ public class CompRep implements Serializable {
             float h = bitmap.height();
             float diagonal = getPythagorasGip(w, h);
             float angleDiagonal = getAngleDiagonal(w, diagonal);
-
             cLoc[DEF_CENTER] = new float[]{bitmap.centerX(), bitmap.centerY()};
             cLoc[R_CENTER] = getPointAngle(diagonal / 2, angleDiagonal,1);
             cLoc[R_R_BOTTOM] = getPointAngle(diagonal, angleDiagonal,1);
@@ -220,12 +225,10 @@ public class CompRep implements Serializable {
     }
 
     public float[] getDst() {
-//        return new float[]{cDst_0,cDst_1,cDst_2,cDst_3,cDst_4,cDst_5,cDst_6,cDst_7};
         return cDst;
     }
 
     public float[] getSrc() {
-//        return new float[]{cSrc_0,cSrc_1,cSrc_2,cSrc_3,cSrc_4,cSrc_5,cSrc_6,cSrc_7};
         return cSrc;
     }
 
@@ -235,6 +238,14 @@ public class CompRep implements Serializable {
 
     public PointF getBitmap(){
         return new PointF(cWidthImg,cHeightImg);
+    }
+
+    public float getWidthBit(){
+        return cWidthImg;
+    }
+
+    public float getHeightBit(){
+        return cHeightImg;
     }
 
     public float[] getPointAngle(float r, float angle, float scale){
@@ -266,9 +277,23 @@ public class CompRep implements Serializable {
         return getPythagorasGip(x,y);
     }
 
+    public float sideTriangle(float[]a,float[]b){
+        float x = a[0] -b[0];
+        float y = a[1]-b[1];
+        return getPythagorasGip(x,y);
+    }
+
+
+
     public PointF calculateVector(PointF a, PointF b){
         return new PointF(b.x-a.x,b.y-a.y);
     }
+
+    public PointF calculateVector(float[] a, float[] b){
+        return new PointF(b[0]-a[0],b[1]-a[1]);
+    }
+
+
 
     public float scalarProduct(PointF a, PointF b){
         return  a.x*b.x+a.y*b.y;
