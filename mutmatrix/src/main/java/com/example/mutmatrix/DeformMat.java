@@ -12,7 +12,6 @@ import com.example.mutmatrix.actions.Scale;
 import com.example.mutmatrix.actions.Translate;
 
 import static com.example.mutmatrix.Massages.ERROR;
-import static com.example.mutmatrix.Massages.MASSAGE;
 
 public class DeformMat {
 
@@ -21,7 +20,6 @@ public class DeformMat {
         SCALE,
         ROTATE,
         DEFORM,
-
     }
 
     private Base base, translate, scale, rotate, deform;

@@ -4,11 +4,6 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
-import com.example.mutmatrix.Massages;
-
-import static com.example.mutmatrix.Massages.MASSAGE;
-
-
 public class Deform extends Base {
 
 

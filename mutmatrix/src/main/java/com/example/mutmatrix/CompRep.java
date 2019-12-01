@@ -45,15 +45,6 @@ public class CompRep implements Serializable {
         reset();
     }
 
-    public CompRep command(DeformMat.Command command){
-        cCommand = command.name();
-        return this;
-    }
-
-    public String getCommand(){
-        if(cCommand!=null)return cCommand;
-        else return "command null";
-    }
     public CompRep copy(){
         CompRep rep = new CompRep();
         rep.setBitmap(new PointF(cWidthImg,cHeightImg));
@@ -230,7 +221,6 @@ public class CompRep implements Serializable {
 
     public float getAngleKat(float a, float b){
         return (float)Math.toDegrees(Math.atan(tanAngle(a,b)));
-
     }
 
     public float getAngleDiagonal(float k, float g){
@@ -257,8 +247,6 @@ public class CompRep implements Serializable {
         return getPythagorasGip(x,y);
     }
 
-
-
     public PointF calculateVector(PointF a, PointF b){
         return new PointF(b.x-a.x,b.y-a.y);
     }
@@ -266,8 +254,6 @@ public class CompRep implements Serializable {
     public PointF calculateVector(float[] a, float[] b){
         return new PointF(b[0]-a[0],b[1]-a[1]);
     }
-
-
 
     public float scalarProduct(PointF a, PointF b){
         return  a.x*b.x+a.y*b.y;
@@ -280,8 +266,5 @@ public class CompRep implements Serializable {
     public float tanAngle(float a, float b){
         return a/b;
     }
-
-
-
 
 }

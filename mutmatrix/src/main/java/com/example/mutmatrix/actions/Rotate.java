@@ -91,14 +91,12 @@ public class Rotate extends Base {
             if(angle>180)angle-=360;//делаем формат(180/-180)
             if(angle<-180)angle+=360;
         }
-
         rep.setRotate(angle);
         rep.findLoc();
         float stepX = center.x-rep.getLoc()[R_CENTER][P_X];
         float stepY = center.y-rep.getLoc()[R_CENTER][P_Y];
         rep.setStep(new PointF(rep.getStep().x+stepX,rep.getStep().y+stepY));
         rep.setTranslate(new PointF(rep.getTranslate().x+stepX,rep.getTranslate().y+stepY));
-
     }
 
     private float getSignAngle(float angle){
