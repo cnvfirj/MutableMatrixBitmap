@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.example.mutmatrix.CompRep;
+import com.example.mutmatrix.DeformMat;
 
 public abstract class Base {
 
@@ -21,6 +22,10 @@ public abstract class Base {
         reset();
         this.rep = rep;
         return this;
+    }
+
+    public CompRep getRep(){
+        return rep;
     }
 
     public Base touch(MotionEvent event){

@@ -6,6 +6,8 @@ import android.view.MotionEvent;
 
 import com.example.mutmatrix.Massages;
 
+import static com.example.mutmatrix.Massages.MASSAGE;
+
 
 public class Deform extends Base {
 
@@ -39,8 +41,11 @@ public class Deform extends Base {
 
     private PointF start, fin;
 
+    private boolean quadrangle;
+
     public Deform(Context context) {
         super(context);
+        quadrangle = true;
     }
 
     @Override
@@ -70,24 +75,28 @@ public class Deform extends Base {
     public void reset() {
        sector = Sector.NON;
        start = null;
+       fin = null;
 }
 
     @Override
     public void start(PointF p) {
-        start = p;
-        getTouch(getPointBitmap(p));
+        start = getPointBitmap(p);
+        sector = getTouch(start);
     }
 
     @Override
     public void move(PointF p) {
-        deform(getPointBitmap(p));
+        if(fin!=null)start = new PointF(fin.x,fin.y);
+        fin = getPointBitmap(p);
+        deform();
     }
 
     @Override
     public void fin(PointF p) {
-        deform(getPointBitmap(p));
-        rep.finDeform();
+        fin = getPointBitmap(p);
+        deform();
         start = null;
+        fin = null;
         sector = Sector.NON;
     }
 
@@ -122,36 +131,32 @@ public class Deform extends Base {
         return new PointF(iX*x/rep.getScale(),iY*y/rep.getScale());
     }
 
-    private boolean getTouch(PointF touch){
+    private Sector getTouch(PointF touch){
 
         PointF[]control = muteDeformLoc(Coordinates.DEFAULT);
         sector = Sector.NON;
 
         if(touch.x>control[0].x&&touch.x<rep.getBitmap().x/2){
             if(touch.y>control[0].y&&touch.y<rep.getBitmap().y/2){
-                sector = Sector.LEFT_TOP;
-                return true;
+                return Sector.LEFT_TOP;
             }
         }
         if (touch.x<control[1].x&&touch.x>rep.getBitmap().x/2){
             if(touch.y>control[1].y&&touch.y<rep.getBitmap().y/2){
-                sector = Sector.RIGHT_TOP;
-                return true;
+                return Sector.RIGHT_TOP;
             }
         }
         if (touch.x<control[2].x&&touch.x>rep.getBitmap().x/2){
             if(touch.y<control[2].y&&touch.y>rep.getBitmap().y/2){
-                sector = Sector.RIGHT_BOTTOM;
-                return true;
+                return Sector.RIGHT_BOTTOM;
             }
         }
         if (touch.x>control[3].x&&touch.x<rep.getBitmap().x/2){
             if(touch.y<control[3].y&&touch.y>rep.getBitmap().y/2){
-                sector = Sector.LEFT_BOTTOM;
-                return true;
+                return Sector.LEFT_BOTTOM;
             }
         }
-        return false;
+        return Sector.NON;
     }
 
     public PointF[] muteDeformLoc(Coordinates c){
@@ -179,66 +184,54 @@ public class Deform extends Base {
         }
         return p;
     }
-    private void deform(PointF p){
 
-//        if(sector.equals(Sector.NON)){
-//            resetDeform();
-//        }
+    private void deform(){
 
-        PointF bitmap = rep.getBitmap();
-        float[]dst = rep.getDst();
-        PointF pointBit = getPointBitmap(start);
-        if(sector.equals(Sector.LEFT_TOP)){
-            float x = rep.getSrc()[0]+(p.x-pointBit.x)+rep.getInt()[0];
-            float y = rep.getSrc()[1]+(p.y-pointBit.y)+rep.getInt()[1];
+        if(!sector.equals(Sector.NON)) {
+            PointF bitmap = rep.getBitmap();
+            float cX = bitmap.x/2;
+            float cY = bitmap.y/2;
+            float bordX = bitmap.x/5;
+            float bordY = bitmap.y/5;
 
-            if(x>rep.getLoc()[R_CENTER][0]-rep.getBorD()[0])x = rep.getLoc()[R_CENTER][0]-rep.getBorD()[0];
-            else if(x<-bitmap.x)x = -bitmap.x;
+            float[] dst = rep.getDst().clone();
+            if (quadrangle&&sector.equals(Sector.LEFT_TOP)) {
+                float x = dst[0] + (fin.x-start.x);
+                float y = dst[1] + (fin.y-start.y);
+                if(x>cX-bordX)x = cX-bordX;
+                if(y>cY-bordY)y = cY-bordY;
 
-            if(y>rep.getLoc()[R_CENTER][1]-rep.getBorD()[1])y = rep.getLoc()[R_CENTER][1]-rep.getBorD()[1];
-            else if(y<-bitmap.y)y = -bitmap.y;
+                dst[0] = x;
+                dst[1] = y;
+            } else if (sector.equals(Sector.RIGHT_TOP)) {
+                float x = dst[2] + (fin.x-start.x);
+                float y = dst[3] + (fin.y-start.y);
+                if(x<cX+bordX)x = cX+bordX;
+                if(y>cY-bordY)y = cY-bordY;
 
-            dst[0]=x;
-            dst[1]=y;
-        }else if(sector.equals(Sector.RIGHT_TOP)){
-            float x = rep.getSrc()[2]+(p.x-pointBit.x)+rep.getInt()[2];
-            float y = rep.getSrc()[3]+(p.y-pointBit.y)+rep.getInt()[3];
+                dst[2] = x;
+                dst[3] = y;
+            } else if (sector.equals(Sector.RIGHT_BOTTOM)) {
+                float x = dst[4] + (fin.x-start.x);
+                float y = dst[5] + (fin.y-start.y);
+                if(x<cX+bordX)x = cX+bordX;
+                if(y<cY+bordY)y = cY+bordY;
 
-            if(x<rep.getLoc()[R_CENTER][0]+rep.getBorD()[0])x = rep.getLoc()[R_CENTER][0]+rep.getBorD()[0];
-            else if(x>bitmap.x*2)x = bitmap.x*2;
+                dst[4] = x;
+                dst[5] = y;
+            } else if (sector.equals(Sector.LEFT_BOTTOM)) {
+                float x = dst[6] + (fin.x-start.x);
+                float y = dst[7] + (fin.y-start.y);
+                if(x>cX-bordX)x = cX-bordX;
+                if(y<cY+bordY)y = cY+bordY;
 
-            if(y>rep.getLoc()[R_CENTER][1]-rep.getBorD()[1])y = rep.getLoc()[R_CENTER][1]-rep.getBorD()[1];
-            else if (y<-bitmap.y)y = -bitmap.y;
+                dst[6] = x;
+                dst[7] = y;
+            }
 
-            dst[2]=x;
-            dst[3]=y;
-        }else if(sector.equals(Sector.RIGHT_BOTTOM)){
-            float x = rep.getSrc()[4]+(p.x-pointBit.x)+rep.getInt()[4];
-            float y = rep.getSrc()[5]+(p.y-pointBit.y)+rep.getInt()[5];
+            rep.setDst(dst);
 
-            if(x<rep.getLoc()[R_CENTER][0]+rep.getBorD()[0]) x = rep.getLoc()[R_CENTER][0]+rep.getBorD()[0];
-            else if(x>bitmap.x*2)x = bitmap.x*2;
-
-            if(y<rep.getLoc()[R_CENTER][1]+rep.getBorD()[1]) y = rep.getLoc()[R_CENTER][1]+rep.getBorD()[1];
-                        else if(y>bitmap.y*2)y = bitmap.y*2;
-
-            dst[4]=x;
-            dst[5]=y;
-        }else if(sector.equals(Sector.LEFT_BOTTOM)){
-            float x = rep.getSrc()[6]+(p.x-pointBit.x)+rep.getInt()[6];
-            float y = rep.getSrc()[7]+(p.y-pointBit.y)+rep.getInt()[7];
-
-            if(x>rep.getLoc()[R_CENTER][0]-rep.getBorD()[0])x = rep.getLoc()[R_CENTER][0]-rep.getBorD()[0];
-            else if(x<-bitmap.x)x = -bitmap.x;
-
-            if(y<rep.getLoc()[R_CENTER][1]+rep.getBorD()[1])y = rep.getLoc()[R_CENTER][1]+rep.getBorD()[1];
-            else if(y>bitmap.y*2)y = bitmap.y*2;
-
-            dst[6]=x;
-            dst[7]=y;
         }
-
-        rep.setDst(dst);
 
     }
 

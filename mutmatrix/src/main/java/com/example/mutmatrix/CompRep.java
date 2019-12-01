@@ -7,17 +7,9 @@ import android.graphics.RectF;
 import java.io.Serializable;
 
 import static com.example.mutmatrix.Massages.ERROR;
+import static com.example.mutmatrix.Massages.MASSAGE;
 
 public class CompRep implements Serializable {
-
-//    public static final int TOP_LEFT_X = 0;
-//    public static final int TOP_LEFT_Y = 1;
-//    public static final int TOP_RIGHT_X = 2;
-//    public static final int TOP_RIGHT_Y = 3;
-//    public static final int BOTTOM_RIGHT_X = 4;
-//    public static final int BOTTOM_RIGHT_Y = 5;
-//    public static final int BOTTOM_LEFT_X = 6;
-//    public static final int BOTTOM_LEFT_Y = 7;
 
     public static final int P_X = 0;
     public static final int P_Y = 1;
@@ -38,11 +30,8 @@ public class CompRep implements Serializable {
     private float cStepX, cStepY;
     private float cScale;
     private float cRotate;
-//    private float cDst_0,cDst_1,cDst_2,cDst_3,cDst_4,cDst_5,cDst_6,cDst_7;
-//    private float cSrc_0,cSrc_1,cSrc_2,cSrc_3,cSrc_4,cSrc_5,cSrc_6,cSrc_7;
-//    private float cInt_0,cInt_1,cInt_2,cInt_3,cInt_4,cInt_5,cInt_6,cInt_7;
 
-    private float[]cDst, cSrc, cInt;
+    private float[]cDst, cSrc;
 
     private float cWidthImg, cHeightImg;
 
@@ -50,10 +39,21 @@ public class CompRep implements Serializable {
 
     private float[]cBord;
 
+    private String cCommand;
+
     CompRep() {
         reset();
     }
 
+    public CompRep command(DeformMat.Command command){
+        cCommand = command.name();
+        return this;
+    }
+
+    public String getCommand(){
+        if(cCommand!=null)return cCommand;
+        else return "command null";
+    }
     public CompRep copy(){
         CompRep rep = new CompRep();
         rep.setBitmap(new PointF(cWidthImg,cHeightImg));
@@ -61,12 +61,8 @@ public class CompRep implements Serializable {
         rep.setScale(cScale);
         rep.setRotate(cRotate);
         rep.setStep(new PointF(cStepX,cStepY));
-//        rep.setDst(new float[]{cDst_0,cDst_1,cDst_2,cDst_3,cDst_4,cDst_5,cDst_6,cDst_7});
-//        rep.setSrc(new float[]{cSrc_0,cSrc_1,cSrc_2,cSrc_3,cSrc_4,cSrc_5,cSrc_6,cSrc_7});
-//        rep.setInt(new float[]{cInt_0,cInt_1,cInt_2,cInt_3,cInt_4,cInt_5,cInt_6,cInt_7});
         rep.setDst(cDst);
         rep.setSrc(cSrc);
-        rep.setInt(cInt);
         return rep;
     }
 
@@ -80,7 +76,6 @@ public class CompRep implements Serializable {
         cLoc = new float[10][];
         cDst = new float[8];
         cSrc = new float[8];
-        cInt = new float[8];
 
     }
 
@@ -153,7 +148,6 @@ public class CompRep implements Serializable {
         cSrc[6] = 0;
         cSrc[7] = bitmap.y;
         setDst(cSrc);
-        cInt = new float[8];
     }
 
     public void setSrc(float[] arr) {
@@ -166,23 +160,6 @@ public class CompRep implements Serializable {
         cSrc[5] = arr[5];
         cSrc[6] = arr[6];
         cSrc[7] = arr[7];
-    }
-    public void setInt(float[] arr) {
-
-        cInt[0] = arr[0];
-        cInt[1] = arr[1];
-        cInt[2] = arr[2];
-        cInt[3] = arr[3];
-        cInt[4] = arr[4];
-        cInt[5] = arr[5];
-        cInt[6] = arr[6];
-        cInt[7] = arr[7];
-    }
-
-    public void finDeform(){
-        for (int i=0;i<cInt.length;i++){
-            cInt[i]=cDst[i]-cSrc[i];
-        }
     }
 
     public RectF getDefaultLoc(){
@@ -220,7 +197,8 @@ public class CompRep implements Serializable {
     }
 
     public float[][]getLoc(){
-        if(cLoc[R_CENTER]==null)findLoc();
+        if(cLoc[R_CENTER]==null)
+            findLoc();
         return cLoc;
     }
 
@@ -230,10 +208,6 @@ public class CompRep implements Serializable {
 
     public float[] getSrc() {
         return cSrc;
-    }
-
-    public float[] getInt(){
-        return cInt;
     }
 
     public PointF getBitmap(){

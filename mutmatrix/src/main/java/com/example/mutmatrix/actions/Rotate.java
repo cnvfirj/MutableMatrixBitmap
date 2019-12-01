@@ -76,10 +76,10 @@ public class Rotate extends Base {
         start = null;
         fin = null;
         center = null;
+        rep.findLoc();
     }
 
     private void calculateRotate(){
-
         float angle = rep.getRotate();
         float top =((start.x- center.x)*(fin.x- center.x))+((start.y- center.y)*(fin.y- center.y));
         double botCS = Math.sqrt((start.x- center.x)*(start.x- center.x)+(start.y- center.y)*(start.y- center.y));

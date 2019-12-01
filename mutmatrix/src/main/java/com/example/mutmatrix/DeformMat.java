@@ -12,6 +12,7 @@ import com.example.mutmatrix.actions.Scale;
 import com.example.mutmatrix.actions.Translate;
 
 import static com.example.mutmatrix.Massages.ERROR;
+import static com.example.mutmatrix.Massages.MASSAGE;
 
 public class DeformMat {
 
@@ -20,18 +21,12 @@ public class DeformMat {
         SCALE,
         ROTATE,
         DEFORM,
-        DEFORM_CONT,
-        MIRROR,
-        RESET,
-        NULLABLE
+
     }
 
     private Base base, translate, scale, rotate, deform;
 
     private CompRep repository;
-
-    private Command command;
-
 
     public DeformMat(Context context) {
         repository = new CompRep();

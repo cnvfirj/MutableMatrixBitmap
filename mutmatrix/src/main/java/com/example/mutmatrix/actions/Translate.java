@@ -59,6 +59,7 @@ public class Translate extends Base {
         calculateTranslate();
         start = null;
         fin = null;
+        rep.findLoc();
     }
 
     protected void calculateTranslate(){
