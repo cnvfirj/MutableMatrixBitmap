@@ -80,6 +80,7 @@ public class Deform extends Base {
 
     @Override
     public void start(PointF p) {
+//        rep.findLoc();
         start = getPointBitmap(p);
         sector = getTouch(start);
     }
@@ -102,7 +103,7 @@ public class Deform extends Base {
 
     @Override
     public PointF getPointBitmap(PointF point){
-
+        rep.findLoc();
         float[]p = new float[]{point.x,point.y};
         final float side_P_L = rep.sideTriangle(p,rep.getLoc()[R_L_TOP]);
         final float side_P_R = rep.sideTriangle(p,rep.getLoc()[R_R_TOP]);
@@ -193,14 +194,12 @@ public class Deform extends Base {
             float cY = bitmap.y/2;
             float bordX = bitmap.x/5;
             float bordY = bitmap.y/5;
-
             float[] dst = rep.getDst().clone();
             if (quadrangle&&sector.equals(Sector.LEFT_TOP)) {
                 float x = dst[0] + (fin.x-start.x);
                 float y = dst[1] + (fin.y-start.y);
                 if(x>cX-bordX)x = cX-bordX;
                 if(y>cY-bordY)y = cY-bordY;
-
                 dst[0] = x;
                 dst[1] = y;
             } else if (sector.equals(Sector.RIGHT_TOP)) {
@@ -208,7 +207,6 @@ public class Deform extends Base {
                 float y = dst[3] + (fin.y-start.y);
                 if(x<cX+bordX)x = cX+bordX;
                 if(y>cY-bordY)y = cY-bordY;
-
                 dst[2] = x;
                 dst[3] = y;
             } else if (sector.equals(Sector.RIGHT_BOTTOM)) {
@@ -216,7 +214,6 @@ public class Deform extends Base {
                 float y = dst[5] + (fin.y-start.y);
                 if(x<cX+bordX)x = cX+bordX;
                 if(y<cY+bordY)y = cY+bordY;
-
                 dst[4] = x;
                 dst[5] = y;
             } else if (sector.equals(Sector.LEFT_BOTTOM)) {
@@ -224,15 +221,10 @@ public class Deform extends Base {
                 float y = dst[7] + (fin.y-start.y);
                 if(x>cX-bordX)x = cX-bordX;
                 if(y<cY+bordY)y = cY+bordY;
-
                 dst[6] = x;
                 dst[7] = y;
             }
-
             rep.setDst(dst);
-
         }
-
     }
-
 }

@@ -24,10 +24,6 @@ public abstract class Base {
         return this;
     }
 
-    public CompRep getRep(){
-        return rep;
-    }
-
     public Base touch(MotionEvent event){
         return this;
     }
