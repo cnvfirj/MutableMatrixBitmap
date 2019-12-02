@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
+import com.example.mutmatrix.DeformMat;
+
 public class Deform extends Base {
 
 
@@ -94,6 +96,12 @@ public class Deform extends Base {
         start = null;
         fin = null;
         sector = Sector.NON;
+    }
+
+    @Override
+    public void specialCommand(DeformMat.SpecialCommand c) {
+        super.specialCommand(c);
+        rep.setDst(rep.getSrc());
     }
 
     @Override

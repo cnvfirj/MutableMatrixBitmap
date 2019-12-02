@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.example.mutmatrix.CompRep;
+import com.example.mutmatrix.DeformMat;
 
 import static com.example.mutmatrix.CompRep.P_X;
 import static com.example.mutmatrix.CompRep.P_Y;
@@ -77,6 +78,14 @@ public class Rotate extends Base {
         fin = null;
         center = null;
         rep.findLoc();
+    }
+
+    @Override
+    public void specialCommand(DeformMat.SpecialCommand c) {
+        super.specialCommand(c);
+        rep.setRotate(0);
+        rep.setTranslate(new PointF(rep.getTranslate().x-rep.getStep().x,rep.getTranslate().y-rep.getStep().y));
+        rep.setStep(new PointF(0,0));
     }
 
     private void calculateRotate(){

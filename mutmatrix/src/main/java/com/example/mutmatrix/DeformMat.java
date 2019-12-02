@@ -19,7 +19,16 @@ public class DeformMat {
         TRANSLATE,
         SCALE,
         ROTATE,
-        DEFORM,
+        DEFORM
+    }
+
+    public enum SpecialCommand{
+        MAX,
+        MIN,
+        ADAPT,
+        COMMON,
+        RESET_ROTATE,
+        RESET_DEFORM
     }
 
     private Base base, translate, scale, rotate, deform;
@@ -108,7 +117,22 @@ public class DeformMat {
         return deform.muteDeformLoc(c);
     }
 
-    public void scaled(Scale.Scaled s){
-        scale.scalar(s);
+
+    public void special(SpecialCommand[]resets){
+
+        for (SpecialCommand c:resets){
+            if(c.equals(SpecialCommand.RESET_DEFORM)){
+                deform.specialCommand(c);
+            }else if(c.equals(SpecialCommand.RESET_ROTATE)){
+                rotate.specialCommand(c);
+            }else if(c.equals(SpecialCommand.MAX)||
+                     c.equals(SpecialCommand.MIN)||
+                     c.equals(SpecialCommand.COMMON)||
+                      c.equals(SpecialCommand.ADAPT)){
+                scale.specialCommand(c);
+            }
+        }
     }
+
+
 }

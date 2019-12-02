@@ -40,7 +40,11 @@ public abstract class Base {
         return null;
     }
 
-    public void scalar(Scale.Scaled s){
+    public void scalar(DeformMat.Command s){
+
+    }
+
+    public void specialCommand(DeformMat.SpecialCommand c){
 
     }
 

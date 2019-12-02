@@ -60,6 +60,10 @@ public class DrawView extends View {
         mat.command(command);
     }
 
+    public void special(DeformMat.SpecialCommand[] c){
+        mat.special(c);
+    }
+
     private void init(){
         bitmap = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.pic);
         mat = new DeformMat(getContext()).bitmap(new PointF(bitmap.getWidth(),bitmap.getHeight()));
@@ -70,6 +74,7 @@ public class DrawView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        mat.view(new PointF(canvas.getWidth(), canvas.getHeight()));
         if(test()){
             canvas.drawBitmap(bitmap,mat.matrix(null),null);
         }
