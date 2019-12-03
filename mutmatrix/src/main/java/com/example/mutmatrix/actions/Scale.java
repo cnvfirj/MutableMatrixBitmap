@@ -34,7 +34,10 @@ public class Scale extends Base{
     public Base touch(MotionEvent event) {
         int index = event.getActionIndex();
         int id = event.getPointerId(index);
-        if(id==0||id==1)detector.onTouchEvent(event);
+        if(id==0||id==1){
+            detector.onTouchEvent(event);
+            if(event.getAction()==MotionEvent.ACTION_UP)fin(null);
+        }
         return this;
     }
 
@@ -65,7 +68,7 @@ public class Scale extends Base{
 
     @Override
     public void fin(PointF p) {
-
+        rep.findLoc();
     }
 
     private float adapt(){

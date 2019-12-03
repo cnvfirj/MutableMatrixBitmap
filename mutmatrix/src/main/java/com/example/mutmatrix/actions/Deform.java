@@ -77,7 +77,7 @@ public class Deform extends Base {
 
     @Override
     public void start(PointF p) {
-//        rep.findLoc();
+        rep.findLoc();
         start = getPointBitmap(p);
         sector = getTouch(start);
     }
