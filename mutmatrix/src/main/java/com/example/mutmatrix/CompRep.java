@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import java.io.Serializable;
 
 import static com.example.mutmatrix.Massages.ERROR;
-import static com.example.mutmatrix.Massages.MASSAGE;
 
 public class CompRep implements Serializable {
 
@@ -235,11 +234,11 @@ public class CompRep implements Serializable {
         return (float) Math.sqrt(g*g-h*h);
     }
 
-    public float sideTriangle(PointF a, PointF b){
-        float x = a.x -b.x;
-        float y = a.y-b.y;
-        return getPythagorasGip(x,y);
-    }
+//    public float sideTriangle(PointF a, PointF b){
+//        float x = a.x -b.x;
+//        float y = a.y-b.y;
+//        return getPythagorasGip(x,y);
+//    }
 
     public float sideTriangle(float[]a,float[]b){
         float x = a[0] -b[0];
@@ -247,9 +246,9 @@ public class CompRep implements Serializable {
         return getPythagorasGip(x,y);
     }
 
-    public PointF calculateVector(PointF a, PointF b){
-        return new PointF(b.x-a.x,b.y-a.y);
-    }
+//    public PointF calculateVector(PointF a, PointF b){
+//        return new PointF(b.x-a.x,b.y-a.y);
+//    }
 
     public PointF calculateVector(float[] a, float[] b){
         return new PointF(b[0]-a[0],b[1]-a[1]);

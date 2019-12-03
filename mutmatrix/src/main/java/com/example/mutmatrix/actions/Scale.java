@@ -12,7 +12,6 @@ import static com.example.mutmatrix.DeformMat.SpecialCommand.COMMON;
 import static com.example.mutmatrix.DeformMat.SpecialCommand.MAX;
 import static com.example.mutmatrix.DeformMat.SpecialCommand.MIN;
 import static com.example.mutmatrix.Massages.ERROR;
-import static com.example.mutmatrix.Massages.MASSAGE;
 
 public class Scale extends Base{
 

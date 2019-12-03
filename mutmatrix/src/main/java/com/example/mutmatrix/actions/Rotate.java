@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.view.MotionEvent;
 
-import com.example.mutmatrix.CompRep;
 import com.example.mutmatrix.DeformMat;
 
 import static com.example.mutmatrix.CompRep.P_X;
