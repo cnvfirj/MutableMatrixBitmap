@@ -44,7 +44,7 @@ public abstract class Base {
 
     }
 
-    public void specialCommand(DeformMat.SpecialCommand c){
+    public void specialCommand(DeformMat.SpecialCommand c, PointF p){
 
     }
 

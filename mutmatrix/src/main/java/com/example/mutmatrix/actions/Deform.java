@@ -99,8 +99,8 @@ public class Deform extends Base {
     }
 
     @Override
-    public void specialCommand(DeformMat.SpecialCommand c) {
-        super.specialCommand(c);
+    public void specialCommand(DeformMat.SpecialCommand c, PointF p) {
+        super.specialCommand(c,p);
         rep.setDst(rep.getSrc());
     }
 

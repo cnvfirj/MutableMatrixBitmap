@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
              case R.id.scalar:
                  view.special(new DeformMat.SpecialCommand[]{DeformMat.SpecialCommand.values()[indexScalar]});
-                 if(indexScalar==0)text.setText("min scalar");
-                 else if(indexScalar==1)text.setText("max scalar");
+                 if(indexScalar==0)text.setText("max scalar");
+                 else if(indexScalar==1)text.setText("min scalar");
                  else if(indexScalar==2)text.setText("adapt scalar");
                  else if(indexScalar==3)text.setText("non scalar");
                  indexScalar++;

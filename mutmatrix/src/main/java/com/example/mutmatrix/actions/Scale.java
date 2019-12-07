@@ -48,12 +48,20 @@ public class Scale extends Base{
     }
 
     @Override
-    public void specialCommand(DeformMat.SpecialCommand c) {
-        super.specialCommand(c);
+    public void specialCommand(DeformMat.SpecialCommand c, PointF p) {
+        super.specialCommand(c,p);
+        float scale = rep.getScale();
+        PointF trans = rep.getTranslate();
         if(c.equals(MAX))rep.setScale(10.f);
         else if(c.equals(MIN))rep.setScale(0.1f);
         else if(c.equals(ADAPT))rep.setScale(adapt());
         else if(c.equals(COMMON))rep.setScale(1.0f);
+        scale = rep.getScale()/scale;
+        final float x = (p.x-trans.x)*scale;
+        final float y = (p.y-trans.y)*scale;
+        rep.setTranslate(new PointF(p.x-x,p.y-y));
+        fin(null);
+
     }
 
     @Override

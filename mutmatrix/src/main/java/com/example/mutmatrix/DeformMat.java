@@ -11,8 +11,6 @@ import com.example.mutmatrix.actions.Rotate;
 import com.example.mutmatrix.actions.Scale;
 import com.example.mutmatrix.actions.Translate;
 
-import static com.example.mutmatrix.Massages.ERROR;
-
 public class DeformMat {
 
     public enum Command{
@@ -30,6 +28,8 @@ public class DeformMat {
         RESET_ROTATE,
         RESET_DEFORM
     }
+
+    private SpecialCommand[]spec;
 
     private Base base, translate, scale, rotate, deform;
 
@@ -64,6 +64,7 @@ public class DeformMat {
 
 
     public DeformMat command(Command command){
+        spec = null;
         switch (command){
             case TRANSLATE:
                 base = translate;
@@ -82,8 +83,12 @@ public class DeformMat {
 
     public DeformMat event(MotionEvent event){
         if(base!=null){
-            base.touch(event);
-        }else ERROR("base mutable null");
+            if(spec==null) {
+                base.touch(event);
+            }else {
+                calculateSpec(new PointF(event.getX(),event.getY()));
+            }
+        }
         return this;
     }
 
@@ -119,20 +124,24 @@ public class DeformMat {
 
 
     public void special(SpecialCommand[]resets){
-
-        for (SpecialCommand c:resets){
-            if(c.equals(SpecialCommand.RESET_DEFORM)){
-                deform.specialCommand(c);
-            }else if(c.equals(SpecialCommand.RESET_ROTATE)){
-                rotate.specialCommand(c);
-            }else if(c.equals(SpecialCommand.MAX)||
-                     c.equals(SpecialCommand.MIN)||
-                     c.equals(SpecialCommand.COMMON)||
-                      c.equals(SpecialCommand.ADAPT)){
-                scale.specialCommand(c);
-            }
-        }
+        spec = resets;
     }
 
+     private void calculateSpec(PointF p){
+         for (SpecialCommand c:spec){
+             if(c.equals(SpecialCommand.RESET_DEFORM)){
+                 deform.specialCommand(c,p);
+             }else
+                 if(c.equals(SpecialCommand.RESET_ROTATE)){
+                 rotate.specialCommand(c,p);
+             }else
+                 if(c.equals(SpecialCommand.MAX)||
+                     c.equals(SpecialCommand.MIN)||
+                     c.equals(SpecialCommand.COMMON)||
+                     c.equals(SpecialCommand.ADAPT)){
+                 scale.specialCommand(c,p);
+             }
+         }
+     }
 
 }
